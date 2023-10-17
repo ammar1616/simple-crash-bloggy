@@ -61,11 +61,18 @@ Blogster uses JWT (JSON Web Tokens) for authentication. To access protected rout
 simple-crash-bloggy provides the following API endpoints:
 
 POST /register: Register a new user.
+
 POST /login: Log in with your registered email and password to obtain an authentication token.
+
 POST /addpost: Create a new post.
+
 GET /getposts: Get a list of posts.
+
 PATCH /updatepost/:postId: Update a specific post created by the current user.
+
 DELETE /deletepost/:postId: Delete a specific post created by the current user.
+
+
 ### Database
 Blogster uses MongoDB as its database. You can configure the database connection in your environment variables or a configuration file.
 
