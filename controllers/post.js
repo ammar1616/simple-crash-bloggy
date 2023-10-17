@@ -4,8 +4,18 @@ const User = require("../models/user")
 exports.getposts = async (req, res) => {
     try {
         let posts = await Post.find({}).populate('author', 'username -_id')
-        console.log(posts);
         res.json({ message: "All Posts", posts })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error." })
+    }
+}
+
+exports.getpost = async (req, res) => {
+    try {
+        const { postId } = req.params
+        let posts = await Post.findById(postId)
+        res.json({ message: "View only post", posts })
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Internal Server Error." })
@@ -18,14 +28,13 @@ exports.addpost = async (req, res) => {
         if (!userId) {
             return res.status(401).json({ error: "You must login to create a post" });
         }
-        const user = await User.findById(userId).select("_id posts")
-        console.log(user);
+        const user = await User.findById(userId).select("_id posts username")
         const { content } = req.body
         const post = new Post({ content, author: userId })
         await post.save()
         user.posts.push(post)
         await user.save()
-        res.status(201).json({ message: "Post created successfully", post, author: user });
+        res.status(201).json({ message: "Post created successfully", post, author: user.username });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Internal Server Error." })
