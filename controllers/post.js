@@ -91,3 +91,25 @@ exports.deletepost = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+
+exports.like = async (req, res) => {
+    try {
+        const { postId } = req.params
+        const userId = req.user._id;
+        if (!userId) {
+            return res.status(401).json({ error: "You must login to like a post" });
+        }
+        const post = await Post.findById(postId).select('likes')
+        if (post.likes.includes(userId.toString())) {
+            post.likes = post.likes.filter(id => !id.equals(userId));
+            await post.save()
+            return res.status(201).json({ error: "You unliked this post" });
+        }
+        post.likes.push(userId)
+        await post.save()
+        return res.status(201).json({ error: "You liked this post" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}

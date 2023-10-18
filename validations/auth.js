@@ -9,7 +9,7 @@ const registerSchema = Joi.object({
 });
 
 exports.registerValidation = (req, res, next) => {
-    const { error, value } = registerSchema.validate(registerSchema)
+    const { error, value } = registerSchema.validate(req.body)
     if (error) {
         return res.status(401).json({ error: error.details[0].message })
     }
@@ -23,8 +23,9 @@ const loginSchema = Joi.object({
 });
 
 exports.loginValidation = (req, res, next) => {
-    const { error, value } = loginSchema.validate(loginSchema)
+    const { error, value } = loginSchema.validate(req.body)
     if (error) {
+        console.log(error.details);
         return res.status(401).json({ error: error.details[0].message })
     }
     req.validatedData = value
