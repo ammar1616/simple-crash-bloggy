@@ -72,6 +72,8 @@ PATCH /updatepost/:postId: Update a specific post created by the current user.
 
 DELETE /deletepost/:postId: Delete a specific post created by the current user.
 
+PUT /like/:postId: Feel free to like the post you're viewing or, if you've previously liked it, you can choose to unlike the post.
+
 
 ### Database
 Blogster uses MongoDB as its database. You can configure the database connection in your environment variables or a configuration file.
